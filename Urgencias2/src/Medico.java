@@ -11,10 +11,20 @@
 public class Medico {
     private String nombre;
     private boolean disponible;
+    private int pacientesAtendidos;
 
-    public Medico(String nombre, boolean disponible) {
+    public int getPacientesAtendidos() {
+        return pacientesAtendidos;
+    }
+
+    public void setPacientesAtendidos(int pacientesAtendidos) {
+        this.pacientesAtendidos = pacientesAtendidos;
+    }
+
+    public Medico(String nombre, boolean disponible, int pacientesAtendidos) {
         this.nombre = nombre;
         this.disponible = disponible;
+        this.pacientesAtendidos = pacientesAtendidos;
     }
 
     public Medico() {

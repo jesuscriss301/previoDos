@@ -8,7 +8,7 @@
  *
  * @author johan leon
  */
-public class Paciente {
+public class Paciente implements Comparable<Paciente> {
     
     private String nombre;
     private boolean asegurado;
@@ -86,6 +86,15 @@ public class Paciente {
     
 
     public Paciente() {
+    }
+
+    @Override
+    public int compareTo(Paciente p) {
+       if(p.getGradoEnfermedad() > this.gradoEnfermedad){
+           return 1;
+       } else if(p.getGradoEnfermedad() < this.gradoEnfermedad){
+           return -1;
+       } else return 0;
     }
     
     

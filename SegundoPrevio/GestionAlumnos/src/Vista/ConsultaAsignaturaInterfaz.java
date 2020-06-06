@@ -32,6 +32,7 @@ public class ConsultaAsignaturaInterfaz extends javax.swing.JFrame {
         txtCreditos.setText(String.valueOf(asignatura.getCreditos()));
         modeloListaAlumnos = new DefaultListModel();
         listaMatriculadas.setModel(modeloListaAlumnos);
+        cargarAlumnos();
     }
     
     public void cargarAlumnos(){

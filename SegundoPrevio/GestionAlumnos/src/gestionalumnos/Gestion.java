@@ -5,6 +5,7 @@
  */
 package gestionalumnos;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Hashtable;
 public class Gestion {
     
     private Hashtable<String,Alumno> alumnos;
-    private Hashtable<Integer,Asignatura> asignaturas;
+    private Hashtable<String,Asignatura> asignaturas;
 
     public Gestion() {
         this.alumnos = new Hashtable();
@@ -30,7 +31,23 @@ public class Gestion {
         return false;
     }
     
-    public boolean agregarAsignatura(int id, String nombre, int creditos){
+    public boolean agregarAlumnoModificado(Alumno a){
+         if(!existeAlumno(a.getDNI())){
+            this.alumnos.put(a.getDNI(), a);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean agregarAsignaturaModificada(Asignatura as){
+        Asignatura a = as;
+        if(!existeAsignatura(a.getId())){
+            this.asignaturas.put(a.getId(), a);
+            return true;
+        }return false;
+    }
+    
+    public boolean agregarAsignatura(String id, String nombre, int creditos){
         Asignatura a = new Asignatura(id,nombre,creditos);
         if(!existeAsignatura(a.getId())){
             this.asignaturas.put(a.getId(), a);
@@ -49,7 +66,34 @@ public class Gestion {
         }
     }
     
-    public void modificarAsignatura(int id, String nombre, int creditos){
+    public boolean eliminarAlumno(String DNI){
+        
+        if(this.getAlumnos().get(DNI) != null){
+            this.getAlumnos().remove(DNI);
+        Hashtable h = this.getAsignaturas();
+        Enumeration e = h.keys();
+        while(e.hasMoreElements()){
+            Asignatura a = (Asignatura)h.get(e.nextElement().toString());
+            a.eliminarAlumno(DNI);
+        }
+            return true;
+        }
+        return false;
+    }
+    
+    public void eliminarAlumnoTemp(String dni){
+        this.getAlumnos().remove(dni);
+    }
+    
+    public void eliminarAsignaturaTemp(String id){
+            this.getAsignaturas().remove(id);
+    }
+    
+    public boolean matricularAsignaturaAlumno(Asignatura as, Alumno a){
+        return this.getAlumnos().get(a.getDNI()).matricularAsignatura(as);
+    }
+    
+    public void modificarAsignatura(String id, String nombre, int creditos){
         if(existeAsignatura(id)){
             Asignatura a = this.getAsignaturas().get(id);
             a.setNombre(nombre);
@@ -57,45 +101,22 @@ public class Gestion {
         }
     }
     
-    public String consultarAlumno(String DNI){
-        String rta = "";
-        if(existeAlumno(DNI)){
-           Alumno a = this.getAlumnos().get(DNI);
-           rta = "Nombre "+a.getNombre()+"\nApellido "+a.getApellido()+
-                   "\nDNI "+a.getDNI()+"\nDireccion "+a.getDireccion()+"\nEmail "+a.getEmail()+"\nEdad "+a.getEdad();
-        }
-        return rta;
-    }
-    
-    public String consultarAsignatura(int id){
-        String rta = "";
+    public boolean eliminarAsignatura(String id){
         if(existeAsignatura(id)){
-           Asignatura a = this.getAsignaturas().get(id);
-           rta = "ID Asignatura "+a.getId()+"\nNombre "+a.getNombre()+
-                   "\nNo. de Creditos "+a.getCreditos();
+            if(!this.getAsignaturas().get(id).tieneAlumnos())  //VERIFICAR SI TIENE ALUMNOS
+                this.getAsignaturas().remove(id);
+            return true;
         }
-        return rta;
+        return false;
     }
     
-    public void eliminarAlumno(String DNI){
-        if(existeAlumno(DNI)){
-            this.getAlumnos().remove(DNI);
-        }
-    }
-    
-    public void eliminarAsignatura(int id){
-        if(existeAsignatura(id)){
-            this.getAsignaturas().remove(id);
-        }
-    }
-    
-    private boolean existeAsignatura(int id) {
+    public boolean existeAsignatura(String id) {
         if(this.asignaturas.isEmpty())
             return false;
         return this.getAsignaturas().get(id) != null;
     }
     
-    private boolean existeAlumno(String DNI){
+    public boolean existeAlumno(String DNI){
         if(this.alumnos.isEmpty())
             return false;
         return this.getAlumnos().get(DNI) != null;
@@ -105,11 +126,11 @@ public class Gestion {
         return alumnos;
     }
 
-    public Hashtable<Integer, Asignatura> getAsignaturas() {
+    public Hashtable<String, Asignatura> getAsignaturas() {
         return asignaturas;
     }
 
-    public void setAsignaturas(Hashtable<Integer, Asignatura> asignaturas) {
+    public void setAsignaturas(Hashtable<String, Asignatura> asignaturas) {
         this.asignaturas = asignaturas;
     }
 

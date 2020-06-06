@@ -5,27 +5,63 @@
  */
 package gestionalumnos;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author Cristian
  */
 public class Asignatura {
     
-    private int id;
+    private String id;
     private String nombre;
     private int creditos;
+    private LinkedList<Alumno> alumnos;
 
-    public Asignatura(int id, String nombre, int creditos) {
+    public Asignatura(String id, String nombre, int creditos) {
         this.id = id;
         this.nombre = nombre;
         this.creditos = creditos;
+        alumnos = new LinkedList();
+    }
+    
+    @Override
+    public String toString(){
+        return this.getNombre();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public LinkedList<Alumno> getAlumnos() {
+        return alumnos;
+    }
+    
+    public void eliminarAlumno(String dni){
+        int i = 0;
+        for (Alumno a : this.getAlumnos()) {
+            if(a.getDNI().equals(dni)){
+                this.getAlumnos().remove(i);
+                break;
+            }
+            i++;
+        }
+    }
+    
+    public int getCantidadAlumnos(){
+        return this.getAlumnos().size();
+    }
+
+    public void setAlumnos(LinkedList<Alumno> alumnos) {
+        this.alumnos = alumnos;
+    }
+    
+    public boolean tieneAlumnos(){
+        return !this.getAlumnos().isEmpty();
+    }
+    
+    public void setId(String id) {
         this.id = id;
     }
 

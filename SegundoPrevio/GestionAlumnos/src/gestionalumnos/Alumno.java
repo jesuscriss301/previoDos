@@ -30,6 +30,36 @@ public class Alumno {
         this.edad = edad;
         this.asignaturas = new LinkedList();
     }
+    
+    public boolean matricularAsignatura(Asignatura a){
+         if(!existeAisgnatura(a)){
+             this.asignaturas.add(a);
+             a.getAlumnos().add(this);
+             return true;
+         }
+         return false;
+    }
+    
+    public void eliminarMateria(int pos){
+        if(!this.asignaturas.isEmpty())
+            this.asignaturas.remove(pos);
+    }
+    
+    private boolean existeAisgnatura(Asignatura a){
+        if(!this.asignaturas.isEmpty()){
+            
+            for (Asignatura as : this.asignaturas) {
+                if(a.getId().equals(as.getId()))
+                    return true;
+            }
+        }
+     return false;   
+    }
+    
+    @Override
+    public String toString(){
+        return this.getNombre()+" "+this.getApellido();
+    }
 
     public String getNombre() {
         return nombre;

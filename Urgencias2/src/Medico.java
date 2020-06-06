@@ -20,6 +20,10 @@ public class Medico {
     public void setPacientesAtendidos(int pacientesAtendidos) {
         this.pacientesAtendidos = pacientesAtendidos;
     }
+    
+    public void agregarPaciente(){
+        this.pacientesAtendidos++;
+    }
 
     public Medico(String nombre, boolean disponible, int pacientesAtendidos) {
         this.nombre = nombre;

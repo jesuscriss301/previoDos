@@ -11,15 +11,13 @@
 public class Paciente implements Comparable<Paciente> {
     
     private String nombre;
-    private boolean asegurado;
     private int numeroAsegurado;
     private int gradoEnfermedad;
     private String urgencia;
     private Medico medicoHabitual;
 
-    public Paciente(String nombre, boolean asegurado, int numeroAsegurado, Medico medicoHabitual) {
+    public Paciente(String nombre, int numeroAsegurado, Medico medicoHabitual) {
         this.nombre = nombre;
-        this.asegurado = asegurado;
         this.numeroAsegurado = numeroAsegurado;
         this.medicoHabitual = medicoHabitual;
     }
@@ -34,14 +32,7 @@ public class Paciente implements Comparable<Paciente> {
         this.medicoHabitual = medicoHabitual;
     }
 
-    public Paciente(String nombre, boolean asegurado, int numeroAsegurado, int gradoEnfermedad, String urgencia, Medico medicoHabitual) {
-        this.nombre = nombre;
-        this.asegurado = asegurado;
-        this.numeroAsegurado = numeroAsegurado;
-        this.gradoEnfermedad = gradoEnfermedad;
-        this.urgencia = urgencia;
-        this.medicoHabitual = medicoHabitual;
-    }
+    
 
     public String getNombre() {
         return nombre;
@@ -51,13 +42,7 @@ public class Paciente implements Comparable<Paciente> {
         this.nombre = nombre;
     }
 
-    public boolean isAsegurado() {
-        return asegurado;
-    }
-
-    public void setAsegurado(boolean asegurado) {
-        this.asegurado = asegurado;
-    }
+    
 
     public int getNumeroAsegurado() {
         return numeroAsegurado;

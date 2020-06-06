@@ -20,14 +20,19 @@ public class Urgencia {
     List<Medico> medicosEnGuardia =  new LinkedList();
     PriorityQueue<Paciente> pacientesEnEspera = new PriorityQueue();
     SalaDeEspera espera = new SalaDeEspera();
+    LinkedList<Paciente> pacientesAsegurados;
 
+    public Urgencia(LinkedList<Medico> medicos, LinkedList<Paciente> pacientesAsegurados) {
+        this.pacientesAsegurados = pacientesAsegurados;
+        crearTurno(medicos);
+    }
     
     
-    public void crearTurno(LinkedList<Medico> medicos, LinkedList<Paciente> pacientesAsegurados ){
+    public void crearTurno(LinkedList<Medico> medicos){
         
-        for(int i = 0; i < medicos.size(); i++){
-            if(medicos.get(i).isDisponible()){
-                medicosEnGuardia.add(medicos.get(i));
+        for(Medico m: medicos){
+            if(m.isDisponible()){
+                medicosEnGuardia.add(m);
                 
             }
              
@@ -39,10 +44,10 @@ public class Urgencia {
            System.out.println(medicosEnGuardia.get(i).getNombre());
        } 
        
-       for(int i = 0; i < pacientesAsegurados.size(); i++){
+       for(Paciente p: pacientesAsegurados){
            
-          System.out.println("nombre del asegurado: "+ pacientesAsegurados.get(i).getNombre()
-                  + " y su medico es : " + pacientesAsegurados.get(i).getMedicoHabitual().getNombre());
+          System.out.println("nombre del asegurado: "+ p.getNombre()
+                  + " y su medico es : " + p.getMedicoHabitual().getNombre());
            
        }
        
@@ -51,76 +56,49 @@ public class Urgencia {
         
     }
     
-    public void insertarPaciente(String urgencias,Paciente paciente, int gradoEnfermedad){
+    public boolean insertarPaciente(String urgencias,Paciente paciente, int gradoEnfermedad){
         
-        if(paciente.isAsegurado()){
-            
-            paciente.setGradoEnfermedad(gradoEnfermedad);
+        for(Paciente p : pacientesAsegurados){
+            if(p.getNumeroAsegurado() == paciente.getNumeroAsegurado()){
+                 paciente.setGradoEnfermedad(gradoEnfermedad);
             paciente.setUrgencia(urgencias);
             pacientesEnEspera.add(paciente);
-            System.out.println("se agrego el paciente a la sala de espera");
+            return true;
             
-        }else {
-            System.out.println("El paciente no esta asegurado, que se muera");
+            } 
         }
+        return false;
         
-
-    
 }       
     public void atenderPaciente(){
        
-          int c1 = 0;
-          
-          for(Paciente p : pacientesEnEspera){//ordenando los pacientes por grado de enfermedad
-              System.out.println(p.getNombre());
+          boolean esta = false;
+            
+
+          Paciente p = pacientesEnEspera.poll();
+          Medico d = p.getMedicoHabitual();
+          for(Medico m :  medicosEnGuardia){
+              if(m.getNombre().equals(d.getNombre())){
+                  m.agregarPaciente();
+                  esta = true;
+              }  
           }
-        
-         for(Paciente e : pacientesEnEspera){
-             int cPacientes = medicosEnGuardia.get(c1).getPacientesAtendidos();
-              if(pacientesEnEspera.element().getMedicoHabitual().getNombre().equals(medicosEnGuardia.get(c1).getNombre())){
-                  cPacientes++; 
-                  medicosEnGuardia.get(c1).setPacientesAtendidos(cPacientes);
-                  
-              } else {
-//                  cPacientes++;
-//                  medicosEnGuardia.get(0).setPacientesAtendidos(cPacientes);
-              }
-              
-              c1++;
-                
-                
+          if(!esta){
+              medicosEnGuardia.get(0).agregarPaciente();
           }
-         
-//         for(int i = 0; i < medicosEnGuardia.size(); i++){
-//                 int cPacientes = medicosEnGuardia.get(i).getPacientesAtendidos();
-//             if(medicosEnGuardia.get(i).getNombre().equals(pacientesEnEspera.element().getMedicoHabitual().getNombre())){
-//                 cPacientes++;
-//                 medicosEnGuardia.get(i).setPacientesAtendidos(cPacientes);
-//             } else {
-//                 
-//                 medicosEnGuardia.get(0).setPacientesAtendidos(cPacientes);
-//             }
-//         }
-        
-//       for(Paciente e : pacientesEnEspera){
-//             c1++;
-//             int cPacientes = medicosEnGuardia.get(c1).getPacientesAtendidos();
-//              if(e.getMedicoHabitual().getNombre().equals(medicosEnGuardia.get(c1).getNombre())){
-//                  cPacientes++;
-//                  medicosEnGuardia.get(c1).setPacientesAtendidos(cPacientes);
-//              } else {
-//                  cPacientes++;
-//                  medicosEnGuardia.get(0).setPacientesAtendidos(cPacientes);
-//              }
-//          }
-        
-    }
-    
+       
+                
+}         
     public void listarTurno(LinkedList<Medico> medicos){
-         for(int i = 0; i < medicos.size(); i++){
-          System.out.println("El medioco " + medicosEnGuardia.get(i).getNombre() + " ha atendido a: " + medicosEnGuardia.get(i).getPacientesAtendidos() 
+         for(Medico m : medicosEnGuardia){
+          System.out.println("El medioco " + m.getNombre() + " ha atendido a: " + m.getPacientesAtendidos() 
            + " pacientes");
         }
     }
     
+    
+        
+
 }
+        
+

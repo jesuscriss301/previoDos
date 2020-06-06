@@ -5,6 +5,8 @@
  */
 package gestionalumnos;
 
+import Vista.GestionInterfaz;
+
 /**
  *
  * @author Cristian
@@ -13,19 +15,8 @@ public class GestionAlumnos {
 
     public static void main(String[] args) {
         
-        Gestion g = new Gestion();
-        
-        g.agregarAlumno("jose", "ppopo", "5765765", "vjhvjvj", "jhfkhjf", 45);
-        g.agregarAlumno("jose", "ppopo", "5769765", "vjhvjvj", "jhfkhjf", 45);
-        
-        System.out.println(g.getAlumnos().toString());
-        
-        g.eliminarAlumno("5765765");
-        
-        System.out.println(g.getAlumnos().toString());
-        
-        System.out.println(g.consultarAlumno("5769765"));
-        
+        GestionInterfaz g = new GestionInterfaz();
+        g.setVisible(true);
     }
     
 }
